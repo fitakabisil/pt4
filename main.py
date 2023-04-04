@@ -24,16 +24,11 @@ class Cercle:
         self.centre_x += self.change_x
         self.centre_y += self.change_y
 
-        if self.centre_x < self.rayon:
-            pass
-        if self.centre_x > SCREEN_WIDTH - self.rayon:
-            pass
-        if self.centre_y < self.rayon:
-            pass
-        if self.centre_y > SCREEN_HEIGHT - self.rayon:
-            pass
-        if self.centre_x < self.rayon:
-            self.centre_x *= -1
+        if self.centre_x < self.rayon or self.centre_x > SCREEN_WIDTH - self.rayon:
+            self.change_x *= -1.1
+
+        if self.centre_y < self.rayon or self.centre_y > SCREEN_HEIGHT - self.rayon:
+            self.change_y *= -1.1
 
     def draw(self):
         # arcade.draw_circle_filled(center_x, center_y, rayon, color)
@@ -48,12 +43,19 @@ class Rectangle():
         self.longeur = l
         self.hauteur = h
         self.color = c
-        self.changer_x = 4
-        self.changer_y = 4
+        self.changer_x = 3
+        self.changer_y = 3
         self.angle = a
 
-    def update(self):
-        pass
+    def update(self):  # il y a un problème iciz
+        self.center_x += self.center_x
+        self.center_y += self.changer_y
+
+        if self.center_x < self.longeur or self.center_x > SCREEN_WIDTH - self.longeur // 2:
+            self.changer_x *= -1
+
+        if self.center_y < self.hauteur or self.center_y > SCREEN_HEIGHT - self.hauteur // 2:
+            self.changer_y *= -1
 
     def draw(self):
         # arcade.draw_rectangle_filled(center_x, center_y, width, height, color)
@@ -77,8 +79,8 @@ class MyGame(arcade.Window):
             self.liste_cercles.append(cercle)
 
         for rectangle in range(20):
-            hauteur = random.randint(10, 30)
-            longeur = random.randint(10, 30)
+            hauteur = random.randint(15, 40)
+            longeur = random.randint(15, 40)
             angle = random.randint(0, 360)
             center_x = random.randint(0 + longeur, SCREEN_WIDTH - longeur)
             center_y = random.randint(0 + hauteur, SCREEN_HEIGHT - hauteur)
@@ -87,10 +89,21 @@ class MyGame(arcade.Window):
             self.liste_rectangles.append(rectangle)
 
     def on_update(self, delta_time: float):
-        Cercle.update(self)
+        for cercle in self.liste_cercles:
+            cercle.update()
 
-    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
-        pass
+        for rectangle in self.liste_rectangles:
+            rectangle.update()
+
+    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):  # le code crash ici
+
+        for cercle in self.liste_cercles:
+            if button == arcade.MOUSE_BUTTON_LEFT:
+                self.liste_cercles.append(cercle)
+
+        for rectangle in self.liste_rectangles:
+            if button == arcade.MOUSE_BUTTON_RIGHT:
+                self.liste_rectangles.append(rectangle)
 
     def on_draw(self):
         arcade.start_render()
