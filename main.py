@@ -43,16 +43,16 @@ class Rectangle():
         self.longeur = l
         self.hauteur = h
         self.color = c
-        self.changer_x = 3
-        self.changer_y = 3
+        self.changer_x = 4
+        self.changer_y = 4
         self.angle = a
 
-    def update(self):  # il y a un problème iciz
-        self.center_x += self.center_x
+    def update(self):  # il y a un problème ici
+        self.center_x += self.changer_x
         self.center_y += self.changer_y
 
         if self.center_x < self.longeur or self.center_x > SCREEN_WIDTH - self.longeur // 2:
-            self.changer_x *= -1
+            self.changer_x *= -1.1
 
         if self.center_y < self.hauteur or self.center_y > SCREEN_HEIGHT - self.hauteur // 2:
             self.changer_y *= -1
@@ -68,26 +68,6 @@ class MyGame(arcade.Window):
         self.liste_cercles = []
         self.liste_rectangles = []
 
-    def setup(self):
-        # remplir la liste avec 20 objets de type Cercle
-        for cercle in range(20):
-            rayon = random.randint(10, 30)
-            centre_x = random.randint(10 + rayon, SCREEN_WIDTH - rayon)
-            centre_y = random.randint(10 + rayon, SCREEN_HEIGHT - rayon)
-            couleur = random.choice(COLORS_C)
-            cercle = Cercle(rayon, centre_x, centre_y, couleur)
-            self.liste_cercles.append(cercle)
-
-        for rectangle in range(20):
-            hauteur = random.randint(15, 40)
-            longeur = random.randint(15, 40)
-            angle = random.randint(0, 360)
-            center_x = random.randint(0 + longeur, SCREEN_WIDTH - longeur)
-            center_y = random.randint(0 + hauteur, SCREEN_HEIGHT - hauteur)
-            color = random.choice(COLORS_R)
-            rectangle = Rectangle(center_x, center_y, longeur, hauteur, color, angle)
-            self.liste_rectangles.append(rectangle)
-
     def on_update(self, delta_time: float):
         for cercle in self.liste_cercles:
             cercle.update()
@@ -97,12 +77,22 @@ class MyGame(arcade.Window):
 
     def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):  # le code crash ici
 
-        for cercle in self.liste_cercles:
             if button == arcade.MOUSE_BUTTON_LEFT:
+                rayon = random.randint(10, 30)
+                centre_x = x
+                centre_y = y
+                couleur = random.choice(COLORS_C)
+                cercle = Cercle(rayon, centre_x, centre_y, couleur)
                 self.liste_cercles.append(cercle)
 
-        for rectangle in self.liste_rectangles:
             if button == arcade.MOUSE_BUTTON_RIGHT:
+                hauteur = random.randint(15, 40)
+                longeur = random.randint(15, 40)
+                angle = random.randint(0, 360)
+                center_x = x
+                center_y = y
+                color = random.choice(COLORS_R)
+                rectangle = Rectangle(center_x, center_y, longeur, hauteur, color, angle)
                 self.liste_rectangles.append(rectangle)
 
     def on_draw(self):
@@ -117,8 +107,6 @@ class MyGame(arcade.Window):
 
 def main():
     my_game = MyGame()
-    my_game.setup()
-
     arcade.run()
 
 
