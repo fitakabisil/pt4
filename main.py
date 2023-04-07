@@ -45,17 +45,19 @@ class Rectangle():
         self.color = c
         self.changer_x = 4
         self.changer_y = 4
+        self.tilt_angle = 1
         self.angle = a
 
     def update(self):  # il y a un problème ici
         self.center_x += self.changer_x
         self.center_y += self.changer_y
+        self.angle += self.tilt_angle
 
         if self.center_x < self.longeur or self.center_x > SCREEN_WIDTH - self.longeur // 2:
             self.changer_x *= -1.1
 
         if self.center_y < self.hauteur or self.center_y > SCREEN_HEIGHT - self.hauteur // 2:
-            self.changer_y *= -1
+            self.changer_y *= -1.1
 
     def draw(self):
         # arcade.draw_rectangle_filled(center_x, center_y, width, height, color)
