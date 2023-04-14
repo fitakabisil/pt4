@@ -17,8 +17,8 @@ class Cercle:
         self.centre_x = x
         self.centre_y = y
         self.color = c
-        self.change_x = 3  # vitess du déplacement du centre_x
-        self.change_y = 3  # vitess du déplacement du centre_y
+        self.change_x = random.randint(-5, 5)  # vitess du déplacement du centre_x
+        self.change_y = random.randint(-5, 5)  # vitess du déplacement du centre_y
 
     def update(self):  # appel la fonction à chaque frame
         # changement des centre x et y pour faire bouger le cercle
@@ -45,8 +45,8 @@ class Rectangle():
         self.longeur = l
         self.hauteur = h
         self.color = c
-        self.changer_x = 4
-        self.changer_y = 4
+        self.changer_x = random.randint(-5, 5)
+        self.changer_y = random.randint(-5, 5)
         self.tilt_angle = 1
         self.angle = a  # l'angle du rectangle
 
